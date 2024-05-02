@@ -9,10 +9,7 @@
 FROM ubuntu:latest
 
 # Install Java.
-RUN \
-  apt-get update && \
-  apt-get install -y openjdk-7-jre && \
-  rm -rf /var/lib/apt/lists/*
+RUN microdnf install --nodocs java-11-openjdk-headless && microdnf clean all
   
 # Copy the rest of the application code to the working directory
 COPY . .
