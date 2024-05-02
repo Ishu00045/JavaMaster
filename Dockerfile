@@ -1,20 +1,14 @@
-# Use an official Node.js runtime as the base image
-FROM node:14
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.5
 
-# Set the working directory in the container
-WORKDIR /app
+MAINTAINER Muhammad Edwin < edwin at redhat dot com >
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+LABEL BASE_IMAGE="registry.access.redhat.com/ubi8/ubi-minimal:8.5"
+LABEL JAVA_VERSION="11"
 
-# Install dependencies
-RUN npm install
+RUN microdnf install --nodocs java-11-openjdk-headless && microdnf clean all
 
-# Copy the rest of the application code to the working directory
-COPY . .
+WORKDIR /work/
+COPY target/*.jar /work/application.jar
 
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Command to run the application
-CMD ["npm", "start"]
+EXPOSE 8080
+CMD ["java", "-jar", "application.jar"]
