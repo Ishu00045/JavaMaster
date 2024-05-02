@@ -1,14 +1,24 @@
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.5
+#
+# OpenJDK Java 7 JRE Dockerfile
+#
+# https://github.com/dockerfile/java
+# https://github.com/dockerfile/java/tree/master/openjdk-7-jre
+#
 
-MAINTAINER Muhammad Edwin < edwin at redhat dot com >
+# Pull base image.
+FROM dockerfile/ubuntu
 
-LABEL BASE_IMAGE="registry.access.redhat.com/ubi8/ubi-minimal:8.5"
-LABEL JAVA_VERSION="11"
+# Install Java.
+RUN \
+  apt-get update && \
+  apt-get install -y openjdk-7-jre && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN microdnf install --nodocs java-11-openjdk-headless && microdnf clean all
+# Define working directory.
+WORKDIR /data
 
-WORKDIR /work/
-COPY target/*.jar /work/application.jar
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
-EXPOSE 8080
-CMD ["java", "-jar", "application.jar"]
+# Define default command.
+CMD ["bash"]
