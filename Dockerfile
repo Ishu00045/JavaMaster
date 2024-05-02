@@ -13,6 +13,12 @@ RUN \
   apt-get update && \
   apt-get install -y openjdk-7-jre && \
   rm -rf /var/lib/apt/lists/*
+  
+# Copy the rest of the application code to the working directory
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 8080
 
 # Define working directory.
 WORKDIR /data
